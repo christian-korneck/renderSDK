@@ -10,7 +10,7 @@ from .compat import *
 import urllib
 # import urllib2
 import logging
-import time
+import datetime
 import random
 import hashlib
 import hmac
@@ -18,6 +18,7 @@ import base64
 import copy
 import collections
 from numbers import Number
+
 
 from .RayvisionException import APIError
 from .RayvisionUtil import print_sth
@@ -120,13 +121,15 @@ class RayvisionAPI(object):
         """
         Generate timestamp (seconds)
         Here's an understanding of timestamps:
-            Timestamp of UTC time = UTC current time - local start time
-            Local timestamp = local current time - local start time
+            seconds passed since beginning of epoch (1/1/1970 00:00 utc)
 
         :return: UTCTimestamp
         :rtype: str
         """
-        return str(int(time.time() + time.timezone))
+
+        # utc - epoch
+        return str(int((datetime.datetime.utcnow() - datetime.datetime(1970, 1, 1)).total_seconds()))
+
         
     def _generate_nonce(self):
         """
